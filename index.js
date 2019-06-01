@@ -1,7 +1,7 @@
 const {Client, Attachment, RichEmbed} = require('discord.js');
 const bot = new Client();
 
-const token = 'NTg0MzAyNjA3MjQyMjMxODE4.XPI8RQ.c2pR-FA6SwwYjPHk8ah1iZtzAo8';
+
 
 const PREFIX = '!';
 
@@ -49,4 +49,4 @@ bot.on('message', message=>{
     }
 });
 
-bot.login(token);
+bot.login(process.env.BOT_TOKEN);
