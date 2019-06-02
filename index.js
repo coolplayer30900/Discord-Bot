@@ -70,36 +70,56 @@ bot.on('message', message=>{
                 break;
 
             case 'stats':
-                if(!args[1]) return message.channel.send('Please give a user ID to show the stats of');
-                req.get({
-                    url: 'https://api.fortnitetracker.com/v1/profile/pc/' + args[1],
-                    
-                    headers: { 
-                       'TRN-Api-Key' : '1cd82c85-89da-4e35-a8dd-d587a8b81025'
-                    },
-                    method: 'GET'
-                   },
-                 
-                   function (e, r, body) {
-                       var jsonObj = JSON.parse(body);
+                try{
+                        if(!args[1]) return message.channel.send('Please give a user ID to show the stats of');
+                        req.get({
+                            url: 'https://api.fortnitetracker.com/v1/profile/pc/' + args[1],
+                            
+                            headers: { 
+                            'TRN-Api-Key' : '1cd82c85-89da-4e35-a8dd-d587a8b81025'
+                            },
+                            method: 'GET'
+                        },
+                        
+                        function (e, r, body) {
+                            var jsonObj = JSON.parse(body);
 
-                       stats = body;
-                       const embed = new RichEmbed()
-                    .setTitle('User Information')
-                    .addField('Player Name', jsonObj.epicUserHandle)
-                    .addField('Platform', jsonObj.platformNameLong, true)
-                    .addField('Duration', 'Lifetime')
-                    .addField('Matches Played', jsonObj.lifeTimeStats[7].value, true)
-                    .addField('Wins', jsonObj.lifeTimeStats[8].value)
-                    .addField('Win%', jsonObj.lifeTimeStats[9].value, true)
-                    .addField('Kills', jsonObj.lifeTimeStats[10].value)
-                    .addField('K/d', jsonObj.lifeTimeStats[11].value, true)
-                    .setColor(0xFF5733)
-                    .setThumbnail(message.author.avatarURL)
-                    .setFooter('Created by Ishan Kumar')
+                            try
+                            {
+                                var newVar = jsonObj.lifeTimeStats[7].value;
+                            }
+                            catch(e)
+                            {
+                                return;
+                            }
+
+
+                            stats = body;
+                            const embed = new RichEmbed()
+                            .setTitle('User Information')
+                            .addField('Player Name', jsonObj.epicUserHandle)
+                            .addField('Platform', jsonObj.platformNameLong, true)
+                            .addField('Duration', 'Lifetime')
+                            .addField('Matches Played', jsonObj.lifeTimeStats[7].value, true)
+                            .addField('Wins', jsonObj.lifeTimeStats[8].value)
+                            .addField('Win%', jsonObj.lifeTimeStats[9].value, true)
+                            .addField('Kills', jsonObj.lifeTimeStats[10].value)
+                            .addField('K/d', jsonObj.lifeTimeStats[11].value, true)
+                            .setColor(0xFF5733)
+                            .setThumbnail(message.author.avatarURL)
+                            .setFooter('Created by Ishan Kumar')
+                            
+                            message.channel.send(embed);
+                        });
+                }
+                catch(e){
+                    console.log(e);
+                    return;
+                }
+                finally
+                {
                     
-                    message.channel.send(embed);
-                   });
+                }
 
                 break;
 
@@ -108,6 +128,7 @@ bot.on('message', message=>{
                 break;
 
             case 'ftnchallenges':
+                try{
                     req.get({
                         url: 'https://api.fortnitetracker.com/v1/challenges' ,
                         
@@ -133,7 +154,16 @@ bot.on('message', message=>{
                             
 
                        });
-                break;
+                    }
+                    catch(e)
+                    {
+                        console.log(e);
+                    }
+                    finally
+                    {
+
+                    }
+                    break;
 
             case 'dog':
                     req.get({
@@ -154,6 +184,23 @@ bot.on('message', message=>{
 
                        });
                 break;
+
+            case 'ishita':
+                message.channel.send('Ishita is dumb');
+                break;
+
+            case 'ishan':
+                var coolEmbed = new RichEmbed;
+                coolEmbed
+                .setTitle('About Ishan')
+                .addField('Only thing you need to know', 'Ishan is the greatest person to have lived on planet Earth')
+                .setColor(0xff0000)
+                .setThumbnail(message.author.avatarURL);
+
+                message.channel.send(coolEmbed);
+
+                break;
+
 
             
 
