@@ -37,6 +37,8 @@ bot.on('guildMemberAdd', member=>{
 bot.on('message', message=>{
     
     let args = message.content.substring(PREFIX.length).split(" ");
+    let namevar = message.content.substring(PREFIX.length + 9);
+    console.log(namevar);
 
     switch(args[0]){
             case 'embed':
@@ -90,6 +92,7 @@ bot.on('message', message=>{
                             }
                             catch(e)
                             {
+                                console.log(e);
                                 return;
                             }
 
@@ -201,12 +204,116 @@ bot.on('message', message=>{
 
                 break;
 
+            case 'ftnmatch':
+                    if(!args[1]) return message.channel.send('Please give a username to access data of!');
 
-            
+                    
+                    console.log(namevar);
+                    try{
+                        req.get({
+                            url: 'https://api.fortnitetracker.com/v1/profile/pc/' + namevar ,
+                            
+                            headers: { 
+                               'TRN-Api-Key' : '1cd82c85-89da-4e35-a8dd-d587a8b81025'
+                            },
+                            method: 'GET'
+                           },
+                         
+                           function (e, r, body) {
+                               try{
+                                    var errorThing = JSON.parse(body);
+                               }
+                                catch(e)
+                                {
+                                    console.log(e);
+                                    return message.channel.send('There was an error processing your request. Please try again.Try 1');
+                                }
+                                finally
+                                {
 
- 
-                
-                
+                                }
+                                var jsonObj = JSON.parse(body);
+                                var ID = jsonObj.accountId;
+                                try
+                                {
+                                    
+
+                                    req.get({
+                                        url: 'https://api.fortnitetracker.com/v1/profile/account/' + ID + '/matches' ,
+                                        
+                                        headers: { 
+                                           'TRN-Api-Key' : '1cd82c85-89da-4e35-a8dd-d587a8b81025'
+                                        },
+                                        method: 'GET'
+                                       },
+                                     
+                                       function (e, r, body2) {
+                                           
+                                            console.log(body2);
+                                            try{
+                                                console.log(JSON.parse(body2));
+                                                var checkParser = JSON.parse(body2);
+                                            }
+                                            catch(e)
+                                            {
+                                                console.log(e);
+                                                return message.channel.send('There was an error processing your command. Try2.5');
+                                            }
+                                            finally
+                                            {
+
+                                            }
+
+                                            var parsedMatch = JSON.parse(body2);
+
+                                            try{
+                                                var checkError = parsedMatch[0].id;
+                                            }
+                                            catch(e)
+                                            {
+                                                console.log(e);
+                                                return message.channel.send('There was an error processing your request. Please try again. Try 3');
+                                            }
+                                            finally
+                                            {
+
+                                            }
+                                            
+
+                                            
+                                            var newEmbed = new RichEmbed();
+                                            newEmbed
+                                            .setTitle('Stats over previous '+ parsedMatch[0].matches + ' matches')
+                                            .addField('Wins', parsedMatch[0].top1, true)
+                                            .addField('Kills', parsedMatch[0].kills, true)
+                                            .addField("Top 10s", parsedMatch[0].top10);
+
+                                            message.channel.send(newEmbed);
+
+                                       });
+                                        
+                                }
+                                catch(e)
+                                {
+                                    return message.channel.send('There was an error processing your request. Please try again. Try 2');
+                                    console.log(e);
+                                }
+                                finally{
+
+                                }
+                           });
+                        }
+                        catch(e)
+                        {
+                            console.log(e);
+                            return message.channel.send('There was an error processing your request. Please try again.');
+                        }
+                        finally
+                        {
+    
+                        }
+                        break;
+                    
 
     }
 });
