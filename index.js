@@ -38,6 +38,7 @@ bot.on('message', message=>{
     
     let args = message.content.substring(PREFIX.length).split(" ");
     let namevar = message.content.substring(PREFIX.length + 9);
+    let namevar2 = message.content.substring(PREFIX.length + 6);
     console.log(namevar);
 
     switch(args[0]){
@@ -75,7 +76,7 @@ bot.on('message', message=>{
                 try{
                         if(!args[1]) return message.channel.send('Please give a user ID to show the stats of');
                         req.get({
-                            url: 'https://api.fortnitetracker.com/v1/profile/pc/' + args[1],
+                            url: 'https://api.fortnitetracker.com/v1/profile/pc/' + namevar2,
                             
                             headers: { 
                             'TRN-Api-Key' : '1cd82c85-89da-4e35-a8dd-d587a8b81025'
@@ -283,10 +284,14 @@ bot.on('message', message=>{
                                             
                                             var newEmbed = new RichEmbed();
                                             newEmbed
-                                            .setTitle('Stats over previous '+ parsedMatch[0].matches + ' matches')
+                                            .setTitle(jsonObj.epicUserHandle + '\'s Stats over previous '+ parsedMatch[0].matches + ' matches')
                                             .addField('Wins', parsedMatch[0].top1, true)
                                             .addField('Kills', parsedMatch[0].kills, true)
-                                            .addField("Top 10s", parsedMatch[0].top10);
+                                            .addField("Top 10s", parsedMatch[0].top10, true)
+                                            .setColor(0x0011ff)
+                                            .setThumbnail('https://pbs.twimg.com/profile_images/1017458813199372289/QtGv1tyn_400x400.jpg');
+                                            
+
 
                                             message.channel.send(newEmbed);
 
